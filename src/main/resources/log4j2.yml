@@ -22,12 +22,15 @@ Configutation:
 #        disableAnsi: false
 
     Console:
-      - name: STDOUT
+      - name: Console
+        target: SYSTEM_OUT
+        PatternLayout:
+          charset: ${charset-UTF-8}
+          pattern: ${pattern}
+          disableAnsi: false
+      - name: ConsoleJson
         PatternLayout:
           Pattern: "{\"timestamp\":\"%d{yyyy-MM-dd'T'HH:mm:ss.nnnnnn}Z\",\"level\":\"%level\",\"line\":%L,\"file\":\"%.255F\",\"thread\":\"%.255t\",\"message\":\"%enc{%m%xEx}{JSON}\"}%n"
-      - name: PLAIN
-        PatternLayout:
-          Pattern: "%msg%n"
 
     RollingFile:
       name: RollingFile
@@ -47,19 +50,19 @@ Configutation:
 
   Loggers:
     Root:
-      level: warn
+      level: info
       AppenderRef:
-        - ref: STDOUT
+        - ref: Console
         # - ref: RollingFile
     Logger:
-      - name: io.github.simplyexample.demo
+      - name: io.github.simplydemo.demo
         additivity: false
         level: debug
         AppenderRef:
-          - ref: STDOUT
+          - ref: Console
         # - ref: RollingFile
       - name: org.springframework
         additivity: false
         level: info
         AppenderRef:
-          - ref: STDOUT
+          - ref: Console
