@@ -1,0 +1,65 @@
+Configutation:
+  name: Default
+  status: warn
+
+  Properties:
+    Property:
+      - name: "log-path"
+        value: "./logs"
+      - name: "pattern"
+        value: "%highlight{[%-5level]} %d{yyyy-MM-dd HH:mm:ss.SSS} [%t][%F] %c{1} - %msg%n"
+      - name: "charset-UTF-8"
+        value: "UTF-8"
+
+  Appenders:
+
+#    Console:
+#      name: ConsoleAppender
+#      target: SYSTEM_OUT
+#      PatternLayout:
+#        charset: ${charset-UTF-8}
+#        pattern: ${pattern}
+#        disableAnsi: false
+
+    Console:
+      - name: STDOUT
+        PatternLayout:
+          Pattern: "{\"timestamp\":\"%d{yyyy-MM-dd'T'HH:mm:ss.nnnnnn}Z\",\"level\":\"%level\",\"line\":%L,\"file\":\"%.255F\",\"thread\":\"%.255t\",\"message\":\"%enc{%m%xEx}{JSON}\"}%n"
+      - name: PLAIN
+        PatternLayout:
+          Pattern: "%msg%n"
+
+    RollingFile:
+      name: RollingFile
+      fileName: ${log-path}/rollingfile.log
+      filePattern: "logs/archive/rollingfile.log.%d{yyyy-MM-dd-hh-mm}_%i.gz"
+      PatternLayout:
+        charset: ${charset-UTF-8}
+        pattern: ${pattern}
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: "200KB"
+        TimeBasedTriggeringPolicy:
+          interval: "1"
+      DefaultRollOverStrategy:
+        max: "30"
+        fileIndex: "max"
+
+  Loggers:
+    Root:
+      level: warn
+      AppenderRef:
+        - ref: STDOUT
+        # - ref: RollingFile
+    Logger:
+      - name: io.github.simplyexample.demo
+        additivity: false
+        level: debug
+        AppenderRef:
+          - ref: STDOUT
+        # - ref: RollingFile
+      - name: org.springframework
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: STDOUT

@@ -1,0 +1,11 @@
+debug: false
+server:
+  port: 8080
+
+spring:
+  application:
+    name: log4j2-demo
+
+logging:
+  config: classpath:log4j2.yml
+
